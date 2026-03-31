@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background:linear-gradient(135deg,#3397a8,#764ba2);
+        }
+        form {
+            width: 350px;
+            padding: 40px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            width: 96%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            outline: none;
+            border-radius: 8px;
+
+        }
+        input:focus {
+            border: 1px solid blue;
+        }
+        .container {
+            margin-top: 14px;
+        }
+        .error {
+            color: red;
+            margin-top: 8px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background:linear-gradient(45deg,#b6360f,#a1a308);
+            color: #fff;
+
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm">
+        <label for="uname">Username</label><br>
+        <input type="text" name="uname" id="uname">
+        <p id="unameError" class="error"></p>
+        <label for="password">Password</label><br>
+        <input type="password" name="password" id="password">
+        <p id="passError" class="error"></p>
+        <label for="cpass">Confirm Password</label><br>
+        <input type="password" name="cpass" id="cpass">
+        <p id="cpassError" class="error"></p>
+        <label for="email">Email</label><br>
+        <input type="text" name="email" id="email">
+        <p id="emailError" class="error"></p>
+        <label for="language">Language</label><br>
+        <div class="container">
+            <input type="checkbox" name="language" value="english">English
+            <input type="checkbox" name="language" value="hindi">Hindi
+            <input type="checkbox" name="language" value="gujarati">Gujarati
+            <p id="languageError" class="error"></p>
+        </div>
+        <label for="gender">Gender</label><br>
+        <div class="container">
+            <input type="radio" name="gender" value="male">Male
+            <input type="radio" name="gender" value="female">Female
+            <input type="radio" name="gender" value="other">other
+            <p id="genderError" class="error"></p>
+        </div>
+        <input type="submit" name="submit" value="Submit">
+    </form>
+    <script>
+        let form = document.getElementById("myForm");
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let existusername = ["admin", "kinjal", "test123", "xyz"];
+
+            let userName =document.getElementById("uname").value.trim();
+            let password =document.getElementById("password").value;
+            let cpass =document.getElementById("cpass").value;
+            let email =document.getElementById("email").value;
+
+            let usernameError = document.getElementById("unameError");
+            let passError = document.getElementById("passError");
+            let cpassError = document.getElementById("cpassError");
+            let emailError = document.getElementById("emailError");
+
+            usernameError.textContent = "";
+            passError.textContent = "";
+            cpassError.textContent = "";
+            emailError.textContent = "";
+            if (userName === "") {
+                usernameError.textContent = "Please enter username";
+                return;
+            }
+
+            if (userName.length<3) {
+                usernameError.textContent = "Username must be at least 3 character long";
+                return;
+            }
+
+            if (userName.length>8) {
+                usernameError.textContent = "Username must not exceed 8 character long";
+                return;
+            }
+
+            const unamePattern = /^[a-zA-Z0-9]+$/;
+            if (!unamePattern.test(userName)) {
+                usernameError.textContent = "Username must contain only letters and numbers";
+                return;
+            }
+
+            if (existusername.includes(userName)) {
+                usernameError.textContent = "Username already exists. please choose another one";
+                return;
+            }
+
+            if (password === "") {
+                passError.textContent = "Please enter password";
+                return;
+            }
+
+            const passPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+            if (!passPattern.test(password)) {
+                passError.textContent = "Password must contain uppercase, lowercase and digit";
+                return;
+            }
+
+            if (cpass === "") {
+                cpassError.textContent = "Please enter confirm password";
+                return;
+            }
+
+            if (password !== cpass) {
+                cpassError.textContent = "Password does not match";
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                emailError.textContent = "Please enter valid email address";
+                return;
+            }
+
+            let check = document.querySelectorAll("input[name='language']:checked");
+            let checkLanguageError=document.getElementById("languageError");
+            checkLanguageError.textContent= "";
+
+            if (check.length===0) {
+                checkLanguageError.textContent = "Please select at least one language";
+                return;
+            }
+
+            let radio = document.querySelectorAll("input[name='gender']:checked");
+            let checkGenderError=document.getElementById("genderError");
+            checkGenderError.textContent= "";
+
+            if (radio.length===0) {
+                checkGenderError.textContent = "Please select at least one option";
+                return;
+            }
+
+            alert("Form submitted successfully");
+            form.reset();
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send OTP in js</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+        }
+        .container {
+            background-color: #fff;
+            width: 320px;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        h1 {
+            margin:0;
+            color: #333;
+            font-size: 28px;
+        }
+        button {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            padding: 10px;
+            margin-top: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+        .send-btn {
+            background-color: #3498db;
+        }
+        .send-btn:hover {
+            background-color: #2980b9;
+        }
+        .verify-btn {
+            background-color: #2ecc71;
+        }
+        .verify-btn:hover {
+            background-color: #27ae60;
+        }
+         input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #667eea;
+        }
+        #otpmessage {
+            margin-top: 14px;
+            color: #444;
+            font-weight: bold;
+        }
+        #result {
+            margin-top: 8px;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OTP Verification</h1>
+        <button type="button" class="send-btn" onclick="sendOTP()">Send OTP</button>
+        <p id="otpmessage"></p>
+        <input type="text" id="otpinput" placeholder="Enter OTP">
+        <button type="button" class="verify-btn" onclick="verifyOTP()">Verify OTP</button>
+        <p id="result"></p>
+
+    </div>
+    <script>
+        let generateotp = "";
+        function generateOTP(length=6) {
+            let otp = "";
+            for (let i = 0; i <length; i++) {     
+                otp += Math.floor(Math.random()*10)           
+            }
+            return otp;
+        }
+        function sendOTP() {
+            generateotp = generateOTP();
+            document.getElementById("otpmessage").innerText = `Your OTP is: ${generateotp}`;
+        }
+        function verifyOTP() {
+            let userOTP = document.getElementById("otpinput").value;
+            let Result = document.getElementById("result");
+
+            if (generateotp === "") {
+                Result.innerText = "Please generate OTP first";
+                Result.className = "error";
+            } 
+            else if(userOTP === "") {
+                Result.innerText = "Please enter OTP";
+                Result.className = "error";
+            }
+            else if (userOTP === generateotp) {
+                Result.innerText = "OTP verified successfully";
+                Result.className = "success";
+                document.getElementById("otpinput").value = "";
+            } else {
+                Result.innerText = "Invalid OTP";
+                Result.className = "error";
+            }
+        }
+    </script>
+</body>
+</html>
